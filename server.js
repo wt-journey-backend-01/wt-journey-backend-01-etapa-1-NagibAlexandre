@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/sugestao', (req, res) => {
-    const { nome, nomePrato, ingredientes } = req.query;
+    const { nome, ingredientes } = req.query;
 
     res.send(`
         <!DOCTYPE html>
@@ -27,9 +27,7 @@ app.get('/sugestao', (req, res) => {
         <body>
             <div class="container">
                 <h1>Olá, ${nome.charAt(0).toUpperCase() + nome.slice(1)}! 😀</h1>
-                <p>Sua sugestão de <strong>${nomePrato}</strong> foi registrada com sucesso.</p>
-                <p>Ingredientes sugeridos: ${ingredientes}</p>
-                <br>
+                <p>Recebemos sua sugestão com os ingredientes: <strong>${ingredientes}</strong></p>
                 <p>Agradecemos pela sugestão, ela será avaliada pelos nossos chef's 👩‍🍳👨‍🍳</p>
                 <a href="/" class="btn-pagina">Retornar</a>
             </div>
