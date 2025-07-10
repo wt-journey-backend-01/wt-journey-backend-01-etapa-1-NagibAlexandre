@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path');
+const fs = require('fs');
 const app = express();
 
 const PORT = 3000;
@@ -12,13 +13,29 @@ app.get('/', (req, res) => {
 })
 
 app.get('/sugestao', (req, res) => {
-    const { nome, ingredientes } = req.query;
+    const { nomeUser, nomePrato, ingredientes } = req.query;
 
     res.send(`
-        <h1> Olá ${nome}! </h1>
-        <p> Sua sugestão foi regristrada. </p>
-        <p> Você sugeriu: ${ingredientes}.</p>
-        `);
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Sugestão Recebida</title>
+            <link rel="stylesheet" href="/css/style.css">
+        </head>
+        <body>
+            <div class="container">
+                <h1>Olá, ${nomeUser.charAt(0).toUpperCase() + nomeUser.slice(1)}! 😀</h1>
+                <p>Sua sugestão de <strong>${nomePrato}</strong> foi registrada com sucesso.</p>
+                <p>Ingredientes sugeridos: ${ingredientes}</p>
+                <br>
+                <p>Agradecemos pela sugestão, ela será avaliada pelos nossos chef's 👩‍🍳👨‍🍳</p>
+                <a href="/" class="btn-pagina">Retornar</a>
+            </div>
+        </body>
+        </html>
+    `);
 })
 
 app.get('/contato', (req, res) => {
@@ -29,36 +46,67 @@ app.post('/contato', (req, res) => {
     const { nome, email, assunto, mensagem } = req.body;
 
     res.send(`
-        nome: ${nome}
-        email: ${email}
-        assunto: ${assunto}
-        mensagem: ${mensagem}
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Contato Recebido</title>
+            <link rel="stylesheet" href="/css/style.css">
+        </head>
+        <body>
+            <div class="container">
+                <h1>🍔 Mensagem recebida com sucesso!</h1>
 
-        <a href="/">Retornar</a>
-        `);
+                <p>Olá <strong>${nome}</strong>,</p>
+
+                <p>Recebemos sua mensagem com o assunto: <strong>${assunto}</strong> e queremos agradecer por entrar em contato com a equipe <strong>DevBurger</strong>!</p>
+
+                <p>📩 <strong>Email:</strong> ${email}<br>
+                💬 <strong>Mensagem:</strong> ${mensagem}</p>
+
+                <p>Nosso time de atendimento irá avaliar sua mensagem com todo carinho e te responderemos o mais breve possível.</p>
+
+ 
+
+                <br>
+                <a href="/" class="btn-pagina">Voltar</a>
+            </div>
+        </body>
+        </html>
+    `);
 })
 
 app.get('/api/lanches', (req, res) => {
-    res.send(
-        [
-            {
-                "id": 1,
-                "nome": "DevBurger Clássico",
-                "ingredientes": "Pão brioche, Carne 150g, Queijo cheddar, Alface americana, Tomate fresco, Molho especial"
-            },
-            {
-                "id": 2,
-                "nome": "Burger de Bacon",
-                "ingredientes": "Pão australiano, Carne 180g, Queijo prato, Bacon crocante, Cebola caramelizada, Molho barbecue"
-            },
-            {
-                "id": 3,
-                "nome": "Commit Veggie",
-                "ingredientes": "Pão integral, Burger de grão de bico, Queijo vegano, Rúcula, Tomate seco, Maionese de ervas"
-            }
-        ]
-    )
-})
+    fs.readFile(path.join(__dirname, 'public/data/lanches.json'), 'utf8', (_, data) => {
+        res.json(JSON.parse(data));
+    });
+});
+
+app.use((req, res) => {
+    res.status(404).send(`
+        <!DOCTYPE html>
+        <html lang="pt-br">
+
+        <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>404 - Página não encontrada</title>
+            <link rel="stylesheet" href="/css/style.css" />
+        </head>
+
+        <body>
+            <div class="container" style="text-align:center;">
+                <img src="images/404.png" alt="Erro 404" id="img404" />
+                <h1>404 - Página não encontrada</h1>
+                <p class="center-text">Ops! A página que você tentou acessar não existe. 😕</p>
+                <a href="/" class="btn-pagina">Voltar</a>
+            </div>
+        </body>
+        </html>
+  `);
+});
+
 
 app.listen(PORT, () => {
     console.log(`Servidor da DevBurger rodando em http://localhost:${PORT}`);

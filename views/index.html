@@ -4,23 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>index</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <form action="/sugestao" method="get">
-        <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="">
 
-        <label for="ingredientes">ingredientes</label>
-        <input type="text" name="ingredientes" id="">
+    <div class="container">
+        <img src="images/logo.png" alt="logo" id="imgLogo">
+        <h1>🍔Bem Vindo(a) ao DevBurguer!🍔</h1><br>
+        <p>Somos uma hamburgueria gourmet que atua na região de Belo Horizonte desde 2005.</p>
+        <p>Confira abaixo o nosso cardápio, e caso tenha alguma sugestão, sinta-se livre para pedir a partir do
+            formulário. :D</p>
+    </div>
 
-        <button type="submit">Enviar</button>
-    </form>
+    <div class="container">
+        <h1>Nosso cardápio:</h1><br>
+        <ul id="Cardapio"></ul>
+    </div>
+
+    <div class="container">
+        <h1>Campo para sugestões:</h1><br>
+        <form action="/sugestao" method="get" class="forms">
+            <label for="nomeUser">Seu nome:</label>
+            <input type="text" name="nomeUser" id="" placeholder="Ex: Pedro">
+            <br>
+            <label for="nomePrato">Nome do prato:</label>
+            <input type="text" name="nomePrato" id="" placeholder="Ex: Salada">
+            <br>
+            <label for="ingredientes">Ingredientes do prato:</label>
+            <input type="text" name="ingredientes" id="" placeholder="Ex: Tomate">
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
 
     <br>
+    <div class="container" id="container-btn">
+        <a href="/contato" class="btn-pagina">Contato</a>
+        <a href="/api/lanches" class="btn-pagina">Api</a>
+    </div>
 
-    <a href="/contato">contato</a>
-    <a href="/api/lanches">api</a>
+    <script>
+        fetch("/api/lanches")
+            .then(res => res.json())
+            .then(data => {
+                const lista = document.getElementById("Cardapio");
+                data.forEach(element => {
+                    const item = document.createElement("li");
+                    item.className = "li-cardapio";
+
+                    const img = document.createElement("img");
+                    img.src = `images/${element.id}.png`;
+                    img.alt = `imagem de ${element.nome}`;
+                    img.className = "item-img";
+
+                    const infoDiv = document.createElement("div");
+                    infoDiv.className = "item-info";
+
+                    const nome = document.createElement("strong");
+                    nome.textContent = element.nome;
+
+                    const ingredientes = document.createTextNode(`${element.ingredientes}`);
+
+                    infoDiv.appendChild(nome);
+                    infoDiv.appendChild(ingredientes);
+
+                    item.appendChild(img);
+                    item.appendChild(infoDiv);
+
+                    lista.appendChild(item);
+                });
+            })
+    </script>
 </body>
 
 </html>

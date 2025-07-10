@@ -3,23 +3,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>contato</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <form action="/contato" method="post">
-        <label for="nome">nome</label>
-        <input type="text" name="nome">
 
-        <label for="email">email</label>
-        <input type="text" name="email">
+    <div class="container">
+        <h1>📬 Entre em contato conosco</h1><br>
+        <form action="/contato" method="post" class="forms">
+            <label for="nome">Seu nome:</label>
+            <input type="text" name="nome" placeholder="Ex: Ana">
 
-        <label for="assunto">assunto</label>
-        <input type="text" name="assunto">
+            <label for="email">Seu e-mail:</label>
+            <input type="email" name="email" placeholder="Ex: ana@email.com">
 
-        <label for="mensagem">mensagem</label>
-        <input type="text" name="mensagem">
+            <label for="assunto">Assunto:</label>
+            <input type="text" name="assunto" placeholder="Ex: Feedback">
 
-        <button type="submit">Enviar</button>
-    </form>
-    <a href="/">voltar</a>
+            <label for="mensagem">Mensagem:</label>
+            <textarea name="mensagem" rows="4" placeholder="Digite sua mensagem aqui..."></textarea>
+
+            <button type="submit" class="btn-pagina">Enviar</button>
+        </form>
+    </div>
+
+    <br>
+    <div class="container" id="container-btn">
+        <a href="/" class="btn-pagina">Voltar</a>
+    </div>
+
 </body>
 </html>
